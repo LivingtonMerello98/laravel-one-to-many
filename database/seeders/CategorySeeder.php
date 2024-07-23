@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
@@ -14,9 +15,11 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        //disabilita le chiavi per poter lanciare il seeder
+        Schema::disableForeignKeyConstraints();
 
         //possibilità di svuotare la tabella a ogni esecuzione del seeder
-        //Category::truncate();
+        Category::truncate();
 
         $categories = ['Frontend', 'Backend', 'AI', 'Fullstack'];
 
@@ -28,5 +31,7 @@ class CategorySeeder extends Seeder
 
             $new_category->save();
         }
+        //abilita le chiavi dopo che la tabella è stata popolata
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -22,4 +22,9 @@ class Project extends Model
     {
         $this->attributes['languages'] = implode(',', $value);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
