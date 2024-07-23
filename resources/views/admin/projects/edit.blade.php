@@ -21,15 +21,24 @@
                     <label for="image" class="text-white">Immagine del sito</label>
                     <input type="text" name="image" id="image" class="form-control" value="{{ $project->image }}" required>
                 </div>
-        
-        
                 <div class="form-group mb-3">
                     <label for="title" class="text-white">Title</label>
                     <input type="text" name="title" id="title" class="form-control" value="{{ $project->title }}" required>
                 </div>
+
+                <div class="form-group mb-3">
+                    <label for="categories" class="text-white">Type:</label>
+                    <select class="form-select" aria-label="Default select example" name="category_id">
+                        <option selected>seleziona categoria</option>
+                        @foreach ($categories as $category)
+                            <option value="{{$category->id}}" @if (old('category_id')== $category->id) selected @endif>{{$category->title}}</option>
+                        @endforeach
+                      </select>
+                </div>
+
                 <div class="form-group mb-3">
                     <label for="description" class="text-white">Description</label>
-                    <textarea name="description" id="description" class="form-control ">{{ $project->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control " rows="7">{{ $project->description }}</textarea>
                 </div>
                 <div class="form-group mb-3">
                     <label for="languages" class="text-white">Languages</label>

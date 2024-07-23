@@ -41,9 +41,7 @@
                     <td>
                         <div>
                             <p class="text-white fw-bolder">{{ $project->title }}</p>
-                            {{-- <div class="" style="max-width: 700px">
-                                <p class="fs-6 fw-lighter">{{ $project->description }}</p>
-                            </div> --}}
+                            <p class="text-white fw-bolder">Category: {{ $project->category->title }}</p>
                         </div>
                     </td>
                     <td>

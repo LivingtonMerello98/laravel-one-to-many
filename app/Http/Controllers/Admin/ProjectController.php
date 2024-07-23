@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -21,7 +23,8 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('admin.projects.create');
+        $categories = Category::all();
+        return view('admin.projects.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -33,46 +36,71 @@ class ProjectController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'languages' => 'required|array',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        $validated['languages'] = implode(',', $validated['languages']);
-        Project::create($validated);
+        // Genera automaticamente il campo 'slug' dal titolo
+        $validated['slug'] = Str::slug($request->title);
 
+        $validated['languages'] = implode(',', $validated['languages']);
+
+
+        Project::create($validated);
 
         return redirect()->route('projects.index'); //da rivedere
     }
 
 
+
     //dettaglio 
-    public function show(Project $project)
+    public function show($id)
     {
+        $project = Project::with('category')->find($id);
+
+        if (!$project) {
+            return redirect()->route('projects.index')->with('error', 'Progetto non trovato.');
+        }
+
         return view('admin.projects.show', compact('project'));
     }
 
 
     //modifiche
-    public function edit(Project $project)
+    public function edit($id)
     {
-        return view('admin.projects.edit', compact('project'));
+        $project = Project::findOrFail($id);
+        $categories = Category::all();
+
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
 
+
     //aggiornamento
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
+        // Validazione dati provvisoria
         $validated = $request->validate([
             'url' => 'required',
             'image' => 'required',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'languages' => 'required|array',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
+        // Genera automaticamente il campo 'slug' dal titolo
+        $validated['slug'] = Str::slug($request->title);
+
         $validated['languages'] = implode(',', $validated['languages']);
+
+        // trova il progetto esistente e lo aggiorna
+        $project = Project::findOrFail($id);
         $project->update($validated);
 
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.index')->with('success', 'Progetto aggiornato con successo'); //da rivedere
     }
+
 
     public function destroy(Project $project)
     {

@@ -10,7 +10,7 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'url', 'image', 'title', 'description', 'languages'
+        'url', 'image', 'title', 'description', 'languages', 'category_id', 'slug'
     ];
 
     public function getLanguagesArrayAttribute()
