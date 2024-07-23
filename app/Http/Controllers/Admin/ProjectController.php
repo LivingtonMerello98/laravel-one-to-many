@@ -8,6 +8,8 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+//aprire ticket per le request
+
 class ProjectController extends Controller
 {
     public function index()

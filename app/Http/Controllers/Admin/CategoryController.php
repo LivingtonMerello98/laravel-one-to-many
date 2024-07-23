@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Category;
+use App\Models\Project;
+
+//request generate da cmsR
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -13,7 +18,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        //counter per la list
+        $counter = 1;
+
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories', 'counter'));
     }
 
     /**
