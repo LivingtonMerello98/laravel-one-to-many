@@ -78,9 +78,15 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+        $validated['slug'] = Str::slug($request->title);
+
+        $category = Category::findOrFail($id);
+        $category->update($validated);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Progetto aggiornato');
     }
 
     /**
@@ -88,6 +94,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('admin.categories.index')->with('success', 'Progetto eliminato');
     }
 }
