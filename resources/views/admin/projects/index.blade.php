@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+
+{{-- projects index --}}
 @section('content')
 <div class="container">
     <div class="container d-flex mb-5">
@@ -7,7 +9,7 @@
             <h3 class="text-uppercase text-white card-header">projects</h3>
         </div>
         <div class="col-md-6 d-flex justify-content-end">
-            <a href="{{ route('projects.create') }}" class="btn btn-secondary rounded-1 mx-4">
+            <a href="{{ route('admin.projects.create') }}" class="btn btn-secondary rounded-1 mx-4">
                 <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
             </a>
         </div>
@@ -41,7 +43,10 @@
                     <td>
                         <div>
                             <p class="text-white fw-bolder">{{ $project->title }}</p>
-                            <p class="text-white fw-bolder">Category: {{ $project->category->title }}</p>
+                            <p class="text-white">
+                                <strong>Category: </strong>
+                                {{ $project->category ? $project->category->title : 'Categoria non definita' }}
+                            </p>
                         </div>
                     </td>
                     <td>
@@ -54,13 +59,13 @@
                        </ul>
                     </td>
                     <td class="text-center">
-                        <a href="{{ route('projects.show', $project->id) }}" class="btn btn-info rounded-1">
+                        <a href="{{ route('admin.projects.show', $project->id) }}" class="btn btn-info rounded-1">
                             <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
                         </a>
-                        <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-warning rounded-1">
+                        <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning rounded-1">
                             <i class="fa-solid fa-pencil" style="color: #ffffff;"></i>
                         </a>
-                        <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display:inline-block;">
+                        <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger rounded-1">

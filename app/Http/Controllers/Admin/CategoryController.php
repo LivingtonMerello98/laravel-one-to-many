@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Category;
 use App\Models\Project;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 //request generate da cmsR
 use App\Http\Requests\StoreCategoryRequest;
@@ -21,8 +24,9 @@ class CategoryController extends Controller
         //counter per la list
         $counter = 1;
 
-        $categories = Category::all();
-        return view('admin.categories.index', compact('categories', 'counter'));
+        $categories = Category::latest()->paginate(5);
+        $projects = Project::all();
+        return view('admin.categories.index', compact('categories', 'counter', 'projects'));
     }
 
     /**
@@ -30,7 +34,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
@@ -38,23 +43,36 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        //dd($request->all());
+        $validated = $request->validated();
+        $validated['slug'] = Str::slug($request->title);
+
+        Category::create($validated);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Categoria creata con successo');
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        if (!$category) {
+            return redirect()->route('admin.categories.index')->with('error', 'Progetto non trovato.');
+        }
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**

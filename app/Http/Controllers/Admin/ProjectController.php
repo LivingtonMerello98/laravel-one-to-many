@@ -49,7 +49,7 @@ class ProjectController extends Controller
 
         Project::create($validated);
 
-        return redirect()->route('projects.index'); //da rivedere
+        return redirect()->route('admin.projects.index'); //da rivedere
     }
 
 
@@ -60,7 +60,7 @@ class ProjectController extends Controller
         $project = Project::with('category')->find($id);
 
         if (!$project) {
-            return redirect()->route('projects.index')->with('error', 'Progetto non trovato.');
+            return redirect()->route('admin.projects.index')->with('error', 'Progetto non trovato.');
         }
 
         return view('admin.projects.show', compact('project'));
@@ -81,6 +81,8 @@ class ProjectController extends Controller
     //aggiornamento
     public function update(Request $request, $id)
     {
+
+        //dd($request->all());
         // Validazione dati provvisoria
         $validated = $request->validate([
             'url' => 'required',
@@ -100,7 +102,7 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         $project->update($validated);
 
-        return redirect()->route('projects.index')->with('success', 'Progetto aggiornato con successo'); //da rivedere
+        return redirect()->route('admin.projects.index')->with('success', 'Progetto aggiornato con successo'); //da rivedere
     }
 
 
@@ -108,6 +110,6 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return redirect()->route('projects.index');
+        return redirect()->route('admin.projects.index');
     }
 }

@@ -55,9 +55,21 @@
                   </a>
               </li>
               <li>
+                  <a href="{{ url('/admin/categories') }}" class="nav-link text-white bg-light-hover">
+                    <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i>
+                      <span class="d-none d-md-inline-block">Categories</span>
+                  </a>
+              </li>
+              <li>
                   <a href="{{ url('admin/projects/create') }}" class="nav-link text-white bg-light-hover">
                       <i class="fa-solid fa-plus d-inline me-2"></i>
-                      <span class="d-none d-md-inline-block">Create new  </span>
+                      <span class="d-none d-md-inline-block">Create new project  </span>
+                  </a>
+              </li>
+              <li>
+                  <a href="{{ url('admin/categories/create') }}" class="nav-link text-white bg-light-hover">
+                    <i class="fa-solid fa-list" style="color: #ffffff;"></i>
+                      <span class="d-none d-md-inline-block">Create new category  </span>
                   </a>
               </li>
               <li>
